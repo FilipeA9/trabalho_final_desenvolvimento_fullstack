@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Paciente } from '../models/models';
@@ -7,7 +7,7 @@ import { Paciente } from '../models/models';
 export class PacienteService {
   private apiUrl = 'http://localhost:8081/api/pacientes';
 
-  constructor(private http: HttpClient) {}
+  private http = inject(HttpClient);
 
   listarTodos(): Observable<Paciente[]> {
     return this.http.get<Paciente[]>(this.apiUrl);

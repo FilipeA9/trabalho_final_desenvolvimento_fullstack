@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Consulta } from '../models/models';
@@ -7,7 +7,7 @@ import { Consulta } from '../models/models';
 export class ConsultaService {
   private apiUrl = 'http://localhost:8081/api/consultas';
 
-  constructor(private http: HttpClient) {}
+  private http = inject(HttpClient);
 
   listarTodas(): Observable<Consulta[]> {
     return this.http.get<Consulta[]>(this.apiUrl);

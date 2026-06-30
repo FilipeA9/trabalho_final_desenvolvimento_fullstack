@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject, signal } from '@angular/core';
 import { MatTableModule } from '@angular/material/table';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
@@ -14,17 +14,17 @@ import { Paciente } from '../../../core/models/models';
   styleUrl: './paciente-list.component.scss'
 })
 export class PacienteListComponent implements OnInit {
-  pacientes: Paciente[] = [];
+  pacientes = signal<Paciente[]>([]);
   displayedColumns = ['id', 'nome', 'cpf', 'telefone', 'acoes'];
 
-  constructor(private pacienteService: PacienteService) {}
+  private pacienteService = inject(PacienteService);
 
   ngOnInit(): void {
     this.carregarPacientes();
   }
 
   carregarPacientes(): void {
-    this.pacienteService.listarTodos().subscribe(data => this.pacientes = data);
+    this.pacienteService.listarTodos().subscribe(data => this.pacientes.set(data));
   }
 
   excluir(id: number): void {

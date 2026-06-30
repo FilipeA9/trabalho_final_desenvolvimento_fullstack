@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject, signal } from '@angular/core';
 import { MatTableModule } from '@angular/material/table';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
@@ -15,17 +15,23 @@ import { Consulta } from '../../../core/models/models';
   styleUrl: './consulta-list.component.scss'
 })
 export class ConsultaListComponent implements OnInit {
-  consultas: Consulta[] = [];
+  consultas = signal<Consulta[]>([]);
   displayedColumns = ['id', 'pacienteNome', 'dentistaNome', 'dataHora', 'status', 'acoes'];
 
-  constructor(private consultaService: ConsultaService) {}
+  statusColors: Record<string, string> = {
+    'AGENDADA': 'primary',
+    'CONCLUIDA': 'accent',
+    'CANCELADA': 'warn'
+  };
+
+  private consultaService = inject(ConsultaService);
 
   ngOnInit(): void {
     this.carregarConsultas();
   }
 
   carregarConsultas(): void {
-    this.consultaService.listarTodas().subscribe(data => this.consultas = data);
+    this.consultaService.listarTodas().subscribe(data => this.consultas.set(data));
   }
 
   cancelar(id: number): void {
@@ -38,12 +44,5 @@ export class ConsultaListComponent implements OnInit {
     this.consultaService.atualizarStatus(id, 'CONCLUIDA').subscribe(() => this.carregarConsultas());
   }
 
-  getStatusColor(status: string): string {
-    switch (status) {
-      case 'AGENDADA': return 'primary';
-      case 'CONCLUIDA': return 'accent';
-      case 'CANCELADA': return 'warn';
-      default: return '';
-    }
-  }
+
 }

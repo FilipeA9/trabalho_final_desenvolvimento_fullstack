@@ -2,15 +2,61 @@
   <h1 class="page-title">Dashboard</h1>
   <p class="page-subtitle">Bem-vindo ao Sistema de Gestão Odontológica</p>
 
-  <div class="cards-grid">
-    @for (card of cards; track card.route) {
-      <mat-card class="dashboard-card" [routerLink]="card.route" [style.border-left-color]="card.color">
-        <mat-card-header>
-          <mat-icon mat-card-avatar [style.color]="card.color" class="card-icon">{{ card.icon }}</mat-icon>
-          <mat-card-title>{{ card.title }}</mat-card-title>
-          <mat-card-subtitle>{{ card.description }}</mat-card-subtitle>
-        </mat-card-header>
-      </mat-card>
-    }
+  <!-- Seção de Indicadores -->
+  <div class="metrics-grid">
+    <mat-card class="metric-card">
+      <mat-card-header>
+        <mat-icon mat-card-avatar class="metric-icon" style="color: #1976d2;">people</mat-icon>
+        <mat-card-title class="metric-value">{{ totalPacientes() }}</mat-card-title>
+        <mat-card-subtitle>Pacientes Cadastrados</mat-card-subtitle>
+      </mat-card-header>
+    </mat-card>
+
+    <mat-card class="metric-card">
+      <mat-card-header>
+        <mat-icon mat-card-avatar class="metric-icon" style="color: #388e3c;">event_available</mat-icon>
+        <mat-card-title class="metric-value">{{ consultasMes() }}</mat-card-title>
+        <mat-card-subtitle>Consultas este Mês</mat-card-subtitle>
+      </mat-card-header>
+    </mat-card>
+
+    <mat-card class="metric-card">
+      <mat-card-header>
+        <mat-icon mat-card-avatar class="metric-icon" style="color: #f57c00;">today</mat-icon>
+        <mat-card-title class="metric-value">{{ consultasHoje() }}</mat-card-title>
+        <mat-card-subtitle>Agendamentos Hoje</mat-card-subtitle>
+      </mat-card-header>
+    </mat-card>
+  </div>
+
+  <div class="dashboard-content">
+    <!-- Links Rápidos -->
+    <div class="cards-grid">
+      @for (card of cards; track card.route) {
+        <mat-card class="dashboard-card" [routerLink]="card.route" [style.border-left-color]="card.color">
+          <mat-card-header>
+            <mat-icon mat-card-avatar [style.color]="card.color" class="card-icon">{{ card.icon }}</mat-icon>
+            <mat-card-title>{{ card.title }}</mat-card-title>
+            <mat-card-subtitle>{{ card.description }}</mat-card-subtitle>
+          </mat-card-header>
+        </mat-card>
+      }
+    </div>
+
+    <!-- Gráfico -->
+    <mat-card class="chart-card">
+      <mat-card-header>
+        <mat-card-title>Status das Consultas</mat-card-title>
+      </mat-card-header>
+      <mat-card-content class="chart-container">
+        @if (isChartReady()) {
+          <canvas baseChart
+            [data]="pieChartData"
+            [type]="pieChartType"
+            [options]="pieChartOptions">
+          </canvas>
+        }
+      </mat-card-content>
+    </mat-card>
   </div>
 </div>

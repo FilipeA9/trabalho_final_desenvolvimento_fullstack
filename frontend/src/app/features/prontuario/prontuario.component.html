@@ -1,9 +1,121 @@
 <div class="page">
   <h1 class="page-title">Prontuário</h1>
-  <mat-card>
-    <mat-card-content class="placeholder">
-      <mat-icon class="big-icon">description</mat-icon>
-      <p>Selecione um paciente na tela de Pacientes para visualizar o prontuário completo com histórico de consultas e procedimentos realizados.</p>
+  
+  <mat-card class="mb-4">
+    <mat-card-content>
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Selecione o Paciente</mat-label>
+        <mat-select [value]="selectedPacienteId()" (selectionChange)="onPacienteChange($event.value)">
+          @for (p of pacientes(); track p.id) {
+            <mat-option [value]="p.id">{{ p.nome }} - CPF: {{ p.cpf }}</mat-option>
+          }
+        </mat-select>
+      </mat-form-field>
     </mat-card-content>
   </mat-card>
+
+  @if (selectedPacienteId()) {
+    <div class="prontuario-content">
+      
+      <!-- Lado Esquerdo: Histórico -->
+      <div class="history-section">
+        <h2>Histórico Clínico</h2>
+        @if (consultasDoPaciente().length === 0) {
+          <p class="text-muted">Nenhuma consulta encontrada para este paciente.</p>
+        }
+        
+        <mat-accordion>
+          @for (c of consultasDoPaciente(); track c.id) {
+            <mat-expansion-panel>
+              <mat-expansion-panel-header>
+                <mat-panel-title>
+                  Consulta em {{ c.dataHora | date:'dd/MM/yyyy HH:mm' }}
+                </mat-panel-title>
+                <mat-panel-description>
+                  Dentista: {{ c.dentistaNome }} - Status: {{ c.status }}
+                </mat-panel-description>
+              </mat-expansion-panel-header>
+
+              <div class="procedimentos-lista">
+                <h3>Procedimentos Realizados</h3>
+                @let procs = getProcedimentosDaConsulta(c.id);
+                @if (procs.length > 0) {
+                  <table mat-table [dataSource]="procs" class="mat-elevation-z1">
+                    <ng-container matColumnDef="descricao">
+                      <th mat-header-cell *matHeaderCellDef> Descrição </th>
+                      <td mat-cell *matCellDef="let p"> {{p.descricao}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef="valor">
+                      <th mat-header-cell *matHeaderCellDef> Valor </th>
+                      <td mat-cell *matCellDef="let p"> {{p.valor | currency:'BRL'}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef="observacoes">
+                      <th mat-header-cell *matHeaderCellDef> Obs </th>
+                      <td mat-cell *matCellDef="let p"> {{p.observacoes}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef="acoes">
+                      <th mat-header-cell *matHeaderCellDef> </th>
+                      <td mat-cell *matCellDef="let p">
+                        <button mat-icon-button color="warn" (click)="excluirProcedimento(p.id)">
+                          <mat-icon>delete</mat-icon>
+                        </button>
+                      </td>
+                    </ng-container>
+                    <tr mat-header-row *matHeaderRowDef="colunasProcedimentos"></tr>
+                    <tr mat-row *matRowDef="let row; columns: colunasProcedimentos;"></tr>
+                  </table>
+                } @else {
+                  <p class="text-muted">Nenhum procedimento registrado.</p>
+                }
+              </div>
+            </mat-expansion-panel>
+          }
+        </mat-accordion>
+      </div>
+
+      <!-- Lado Direito: Cadastro de Procedimento -->
+      <div class="form-section">
+        <mat-card>
+          <mat-card-header>
+            <mat-card-title>Adicionar Procedimento</mat-card-title>
+          </mat-card-header>
+          <mat-card-content>
+            <form [formGroup]="form" (ngSubmit)="salvarProcedimento()" class="form-grid">
+              
+              <mat-form-field appearance="outline" class="full-width">
+                <mat-label>Vincular à Consulta</mat-label>
+                <mat-select formControlName="consultaId">
+                  @for (c of consultasDoPaciente(); track c.id) {
+                    <mat-option [value]="c.id">
+                      {{ c.dataHora | date:'dd/MM/yyyy' }} - Dentista: {{ c.dentistaNome }}
+                    </mat-option>
+                  }
+                </mat-select>
+              </mat-form-field>
+
+              <mat-form-field appearance="outline" class="full-width">
+                <mat-label>Descrição do Procedimento</mat-label>
+                <input matInput formControlName="descricao" placeholder="Ex: Limpeza, Extração">
+              </mat-form-field>
+
+              <mat-form-field appearance="outline" class="full-width">
+                <mat-label>Valor (R$)</mat-label>
+                <input matInput type="number" formControlName="valor">
+              </mat-form-field>
+
+              <mat-form-field appearance="outline" class="full-width">
+                <mat-label>Observações</mat-label>
+                <textarea matInput formControlName="observacoes" rows="3"></textarea>
+              </mat-form-field>
+
+              <button mat-raised-button color="primary" type="submit" [disabled]="form.invalid" class="full-width">
+                <mat-icon>add</mat-icon> Registrar
+              </button>
+            </form>
+          </mat-card-content>
+        </mat-card>
+      </div>
+      
+    </div>
+  }
 </div>

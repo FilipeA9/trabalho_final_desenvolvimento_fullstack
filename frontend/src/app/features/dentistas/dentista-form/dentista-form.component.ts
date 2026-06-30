@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -19,12 +19,10 @@ export class DentistaFormComponent implements OnInit {
   isEdit = false;
   dentistaId?: number;
 
-  constructor(
-    private fb: FormBuilder,
-    private dentistaService: DentistaService,
-    private router: Router,
-    private route: ActivatedRoute
-  ) {}
+  private fb = inject(FormBuilder);
+  private dentistaService = inject(DentistaService);
+  private router = inject(Router);
+  private route = inject(ActivatedRoute);
 
   ngOnInit(): void {
     this.form = this.fb.group({

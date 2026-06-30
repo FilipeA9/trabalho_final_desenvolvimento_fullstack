@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Dentista } from '../models/models';
@@ -7,7 +7,7 @@ import { Dentista } from '../models/models';
 export class DentistaService {
   private apiUrl = 'http://localhost:8081/api/dentistas';
 
-  constructor(private http: HttpClient) {}
+  private http = inject(HttpClient);
 
   listarTodos(): Observable<Dentista[]> {
     return this.http.get<Dentista[]>(this.apiUrl);

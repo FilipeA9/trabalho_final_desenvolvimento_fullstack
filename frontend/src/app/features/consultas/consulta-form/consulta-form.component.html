@@ -7,7 +7,7 @@
         <mat-form-field appearance="outline">
           <mat-label>Paciente</mat-label>
           <mat-select formControlName="pacienteId">
-            @for (p of pacientes; track p.id) {
+            @for (p of pacientes(); track p.id) {
               <mat-option [value]="p.id">{{ p.nome }}</mat-option>
             }
           </mat-select>
@@ -16,7 +16,7 @@
         <mat-form-field appearance="outline">
           <mat-label>Dentista</mat-label>
           <mat-select formControlName="dentistaId">
-            @for (d of dentistas; track d.id) {
+            @for (d of dentistas(); track d.id) {
               <mat-option [value]="d.id">{{ d.nome }} - {{ d.especialidade }}</mat-option>
             }
           </mat-select>

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject, signal } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -20,16 +20,14 @@ import { Paciente, Dentista } from '../../../core/models/models';
 })
 export class ConsultaFormComponent implements OnInit {
   form!: FormGroup;
-  pacientes: Paciente[] = [];
-  dentistas: Dentista[] = [];
+  pacientes = signal<Paciente[]>([]);
+  dentistas = signal<Dentista[]>([]);
 
-  constructor(
-    private fb: FormBuilder,
-    private consultaService: ConsultaService,
-    private pacienteService: PacienteService,
-    private dentistaService: DentistaService,
-    private router: Router
-  ) {}
+  private fb = inject(FormBuilder);
+  private consultaService = inject(ConsultaService);
+  private pacienteService = inject(PacienteService);
+  private dentistaService = inject(DentistaService);
+  private router = inject(Router);
 
   ngOnInit(): void {
     this.form = this.fb.group({
@@ -38,8 +36,8 @@ export class ConsultaFormComponent implements OnInit {
       dataHora: ['', Validators.required]
     });
 
-    this.pacienteService.listarTodos().subscribe(data => this.pacientes = data);
-    this.dentistaService.listarTodos().subscribe(data => this.dentistas = data);
+    this.pacienteService.listarTodos().subscribe(data => this.pacientes.set(data));
+    this.dentistaService.listarTodos().subscribe(data => this.dentistas.set(data));
   }
 
   salvar(): void {
