@@ -1,0 +1,16 @@
+<div class="dashboard">
+  <h1 class="page-title">Dashboard</h1>
+  <p class="page-subtitle">Bem-vindo ao Sistema de Gestão Odontológica</p>
+
+  <div class="cards-grid">
+    @for (card of cards; track card.route) {
+      <mat-card class="dashboard-card" [routerLink]="card.route" [style.border-left-color]="card.color">
+        <mat-card-header>
+          <mat-icon mat-card-avatar [style.color]="card.color" class="card-icon">{{ card.icon }}</mat-icon>
+          <mat-card-title>{{ card.title }}</mat-card-title>
+          <mat-card-subtitle>{{ card.description }}</mat-card-subtitle>
+        </mat-card-header>
+      </mat-card>
+    }
+  </div>
+</div>

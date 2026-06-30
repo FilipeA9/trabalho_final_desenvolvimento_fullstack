@@ -1,0 +1,5 @@
+.page { max-width: 700px; }
+.page-title { font-size: 28px; font-weight: 700; color: #0d47a1; margin-bottom: 20px; }
+.form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0 16px; }
+.full-width { grid-column: 1 / -1; }
+.form-actions { grid-column: 1 / -1; display: flex; gap: 12px; margin-top: 8px; }

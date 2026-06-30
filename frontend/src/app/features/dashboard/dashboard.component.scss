@@ -1,0 +1,39 @@
+.dashboard {
+  max-width: 900px;
+}
+
+.page-title {
+  font-size: 28px;
+  font-weight: 700;
+  color: #0d47a1;
+  margin-bottom: 4px;
+}
+
+.page-subtitle {
+  font-size: 16px;
+  color: #546e7a;
+  margin-bottom: 32px;
+}
+
+.cards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 20px;
+}
+
+.dashboard-card {
+  cursor: pointer;
+  border-left: 4px solid;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+
+  &:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 6px 20px rgba(13, 71, 161, 0.2);
+  }
+}
+
+.card-icon {
+  font-size: 40px !important;
+  width: 40px !important;
+  height: 40px !important;
+}
