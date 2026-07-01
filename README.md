@@ -6,11 +6,11 @@ O sistema permite o cadastro de pacientes e dentistas, agendamento de consultas 
 
 Alunos:
 
-Matrícula: 202203500, Nome: Amanda Almeida dos Santos
-Matrícula: 202203506, Nome: Fabrício Silva Dias
-Matrícula: 202203508, Nome: Filipe Augusto Lima Silva
-Matrícula: 202203509, Nome: Guilherme Luis Andrade Borges
-Matrícula: 202203512, Nome: Isabela de Queiroz Rodrigues
+* Matrícula: 202203500, Nome: Amanda Almeida dos Santos
+* Matrícula: 202203506, Nome: Fabrício Silva Dias
+* Matrícula: 202203508, Nome: Filipe Augusto Lima Silva
+* Matrícula: 202203509, Nome: Guilherme Luis Andrade Borges
+* Matrícula: 202203512, Nome: Isabela de Queiroz Rodrigues
 
 
 
